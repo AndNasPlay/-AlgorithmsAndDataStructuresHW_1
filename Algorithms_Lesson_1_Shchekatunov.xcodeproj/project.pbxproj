@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1631C8C5272EA2F000285B1D /* HW_3.c in Sources */ = {isa = PBXBuildFile; fileRef = 1631C8C4272EA2F000285B1D /* HW_3.c */; };
 		16386A37272058CB00477A3E /* HW_2.c in Sources */ = {isa = PBXBuildFile; fileRef = 16386A36272058CB00477A3E /* HW_2.c */; };
 		163DAE97271DC3E3000B07B9 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 163DAE96271DC3E3000B07B9 /* main.c */; };
 /* End PBXBuildFile section */
@@ -24,6 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1631C8C4272EA2F000285B1D /* HW_3.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = HW_3.c; sourceTree = "<group>"; };
 		16386A36272058CB00477A3E /* HW_2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = HW_2.c; sourceTree = "<group>"; };
 		163DAE93271DC3E3000B07B9 /* Algorithms_Lesson_1_Shchekatunov */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Algorithms_Lesson_1_Shchekatunov; sourceTree = BUILT_PRODUCTS_DIR; };
 		163DAE96271DC3E3000B07B9 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 			children = (
 				163DAE96271DC3E3000B07B9 /* main.c */,
 				16386A36272058CB00477A3E /* HW_2.c */,
+				1631C8C4272EA2F000285B1D /* HW_3.c */,
 			);
 			path = Algorithms_Lesson_1_Shchekatunov;
 			sourceTree = "<group>";
@@ -121,6 +124,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1631C8C5272EA2F000285B1D /* HW_3.c in Sources */,
 				163DAE97271DC3E3000B07B9 /* main.c in Sources */,
 				16386A37272058CB00477A3E /* HW_2.c in Sources */,
 			);
