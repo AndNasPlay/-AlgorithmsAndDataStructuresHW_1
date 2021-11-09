@@ -10,13 +10,14 @@
 
 #define T int
 #define MaxN 1000
+#define QMAX 100
 
 void menu(void) {
 	printf("1 - Реализовать перевод из десятичной в двоичную систему счисления с использованием стека.\n");
 	printf("2 - Добавить в программу «реализация стека на основе односвязного списка» проверку на выделение памяти. Если память не выделяется, то выводится соответствующее сообщение.\n");
 	printf("4 - Создать функцию, копирующую односвязный список.\n");
-	printf("5 - Реализовать алгоритм перевода из инфиксной записи арифметического выражения в постфиксную.\n");
-	printf("6 - Реализовать очередь.\n");
+	printf("5 - Реализовать алгоритм перевода из инфиксной записи арифметического выражения в постфиксную. (не реализовал!) \n");
+	printf("6 - Реализовать очередь на массиве.\n");
 
 	printf("0 - Выход.\n");
 }
@@ -235,29 +236,198 @@ void solution4(void) {
 
 // MARK: Задание 5. Реализовать алгоритм перевода из инфиксной записи арифметического выражения в постфиксную.
 
+struct PostfixNode {
+	char value;
+	struct PostfixNode *next;
+};
+
+typedef struct PostfixNode NewPostfixNode;
+
+struct OtherNode {
+	char value;
+	struct OtherNode *next;
+};
+
+typedef struct OtherNode NewOtherNode;
+
+struct PostfixStack {
+	NewPostfixNode *head;
+	int size;
+	int maxSize;
+};
+
+struct PostfixStack NewPostfixStack;
+
+struct OtherStack {
+	NewOtherNode *head;
+	int size;
+	int maxSize;
+};
+
+struct OtherStack NewOtherStack;
+
+void postfixPush(char value) {
+
+	if (NewPostfixStack.size >= NewPostfixStack.maxSize) {
+		printf("Error stack size");
+		return;
+	}
+	if (value == '+' || value == '-' || value == '*' || value == '/') {
+		NewOtherNode *other = (NewOtherNode*) malloc(sizeof(NewOtherNode));
+		other->value = value;
+		other->next = NewOtherStack.head;
+		NewOtherStack.head = other;
+		NewOtherStack.size++;
+	} else {
+		NewPostfixNode *tmp = (NewPostfixNode*) malloc(sizeof(NewPostfixNode));
+		tmp->value = value;
+		tmp->next = NewPostfixStack.head;
+		NewPostfixStack.head = tmp;
+		NewPostfixStack.size++;
+	}
+}
+
+char postfixPop(void) {
+	if (NewPostfixStack.size == 0) {
+		printf("Stack is empty");
+		return 0;
+	}
+	NewPostfixNode* next = NULL;
+	char value;
+	value = NewPostfixStack.head->value;
+	next = NewPostfixStack.head;
+	NewPostfixStack.head = NewPostfixStack.head->next;
+	free(next);
+	NewPostfixStack.size--;
+	return value;
+}
+
+char newArr[100];
+
+void printPostfixStack(void) {
+
+	int counter = 0;
+	int characterCounter = 0;
+
+	NewPostfixNode *current = NewPostfixStack.head;
+	NewOtherNode *other = NewOtherStack.head;
+
+	for (int i = 0; other != NULL; i++) {
+
+		newArr[i] = other->value;
+		other = other->next;
+		characterCounter++;
+		counter++;
+	}
+
+
+	for (int i = characterCounter; current != NULL; i++) {
+		newArr[i] = current->value;
+		current = current->next;
+		counter++;
+	}
+
+	while (counter >= 0) {
+		printf("%c ", newArr[counter]);
+		counter--;
+	}
+	printf("\n");
+}
+
 void solution5(void) {
 
-	char n[] = {'2','+','2','*','4'};
-	char new[2];
-	int i, symbols = 0;
+	NewPostfixStack.maxSize = 100;
+	NewPostfixStack.head = NULL;
+	postfixPush('2');
+	postfixPush('*');
+	postfixPush('2');
+	postfixPush('+');
+	postfixPush('3');
+	printPostfixStack();
+}
 
-	for (i = 0; i < sizeof(n); i++) {
-		if (n[i] == '*' || n[i] == '+' || n[i] == '/' || n[i] == '-') {
-			new[symbols] = n[i];
-			symbols++;
-			n[i] = n[i + 1];
-			n[i+1] = NULL;
-		}
+// MARK: Задание 6. Реализовать очередь на массиве.
+
+typedef struct Queue {
+
+	int queueArr[QMAX];
+	int lasElem, firstElem;
+
+} ArrQueueNew;
+
+void initQueue(struct Queue *q) {
+
+	q->firstElem = 1;
+	q->lasElem = 0;
+	return;
+}
+
+void pushArrQueue(struct Queue *q, int x) {
+	if (q->lasElem < QMAX-1) {
+		q->lasElem++;
+		q->queueArr[q->lasElem] = x;
+	} else {
+		printf("Очередь полна!\n");
+	}
+}
+
+int queueIsempty(struct Queue *q) {
+	if(q->lasElem < q->firstElem) {
+		return 1;
+	} else  {
+		return 0;
+	}
+}
+
+void printQueue(struct Queue *q) {
+	int h;
+	if (queueIsempty(q) == 1) {
+		printf("Очередь пуста!\n");
+		return;
+	}
+	for(h = q->firstElem; h<= q->lasElem; h++) {
+		printf("%d ",q->queueArr[h]);
+	}
+	return;
+}
+
+int popFromQueue(struct Queue *q) {
+	int x, h;
+	if (queueIsempty(q) == 1) {
+		printf("Очередь пуста!\n");
+		return 0;
+	}
+	x = q->queueArr[q->firstElem];
+	for(h = q->firstElem; h < q->lasElem; h++) {
+		q->queueArr[h] = q->queueArr[h+1];
+	}
+	q->lasElem--;
+	return x;
+}
+
+void solution6(void) {
+
+	struct Queue *q;
+	int a;
+	q = (ArrQueueNew*)malloc(sizeof(ArrQueueNew));
+
+	initQueue(q);
+	printQueue(q);
+
+	for(int i=0;i<4;i++) {
+		printf("Введите элемент очереди: ");
+		scanf("%d", &a);
+		pushArrQueue(q, a);
 	}
 
-	for (i = 0; i < sizeof(n); i++) {
-		printf("%c", n[i]);
-	}
 	printf("\n");
-	for (i = 0; i < sizeof(new); i++) {
-		printf("%c", new[i]);
+	printQueue(q);
+
+	while(q->firstElem <= q->lasElem) {
+		a = popFromQueue(q);
+		printf("\nУдален элемент %d\n", a);
+		printQueue(q);
 	}
-	printf("\n");
 }
 
 int main(int argc, char *argv[]) {
@@ -281,6 +451,9 @@ int main(int argc, char *argv[]) {
 				break;
 			case 5:
 				solution5();
+				break;
+			case 6:
+				solution6();
 				break;
 			default:
 				break;
