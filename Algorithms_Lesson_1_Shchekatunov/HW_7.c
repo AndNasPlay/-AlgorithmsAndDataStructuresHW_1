@@ -63,136 +63,268 @@ void solution1(void) {
 	printMatrix(G);
 }
 
+// MARK: Задание 2. Написать рекурсивную функцию обхода графа в глубину
+
+int GraphArrayForDepth[MAX][MAX], pointForDepth;
+
+const char* fileNameSecond = "/Users/andrejsekatunov/Desktop/GitHubs/-AlgorithmsAndDataStructuresHW_1/matrixSecond.txt";
+
+void printMatrixFromGraphArrayForDepth(int GraphArrayForDepth[MAX][MAX]) {
+	printf("%s", "     ");
+	for (int i = 0; i < pointForDepth; i++) {
+		printf("%c(%d) ", 65 + i, i);
+	}
+	printf("\n");
+	for (int i = 0; i < pointForDepth; i++) {
+		printf("%c(%d)", 65 + i, i);
+		for (int j = 0; j < pointForDepth; j++) {
+			printf("%5d", GraphArrayForDepth[i][j]);
+		}
+		printf("\n");
+	}
+}
+
+typedef struct nodeForDepth {
+	int vertex;
+	struct nodeForDepth* next;
+} nodeForDepth;
+
+typedef struct GraphForDepth {
+	int numVertices;
+	int* visited;
+	nodeForDepth** adjLists;
+} GraphForDepth;
+
+nodeForDepth* createNodeForDepth(int v) {
+	nodeForDepth* newNode = malloc(sizeof(nodeForDepth));
+	newNode->vertex = v;
+	newNode->next = NULL;
+	return newNode;
+}
+
+GraphForDepth* createGraphForDepth(int vertices) {
+
+	GraphForDepth* graph = malloc(sizeof(GraphForDepth));
+	graph->numVertices = vertices;
+
+	graph->adjLists = malloc(vertices * sizeof(nodeForDepth*));
+
+	graph->visited = malloc(vertices * sizeof(int));
+
+	for (int i = 0; i < vertices; i++) {
+		graph->adjLists[i] = NULL;
+		graph->visited[i] = 0;
+	}
+	return graph;
+}
+
+void addEdgeForDepth(GraphForDepth* graph, int src, int dest) {
+
+	nodeForDepth* newNode = createNodeForDepth(dest);
+	newNode->next = graph->adjLists[src];
+	graph->adjLists[src] = newNode;
+
+	newNode = createNodeForDepth(src);
+	newNode->next = graph->adjLists[dest];
+	graph->adjLists[dest] = newNode;
+}
+
+void printGraphForDepth(GraphForDepth* graph) {
+
+	for (int v = 0; v < graph->numVertices; v++) {
+		nodeForDepth* temp = graph->adjLists[v];
+		printf("\n Вершина: %d\n ", v);
+		while (temp) {
+			printf("%d -> ", temp->vertex);
+			temp = temp->next;
+		}
+		printf("\n");
+	}
+}
+
+void DFS(GraphForDepth* graph, int vertex) {
+	nodeForDepth* adjList = graph->adjLists[vertex];
+	nodeForDepth* temp = adjList;
+
+	graph->visited[vertex] = 1;
+	printf("Посещено %d \n", vertex);
+
+	while(temp!=NULL) {
+		int connectedVertex = temp->vertex;
+
+		if(graph->visited[connectedVertex] == 0) {
+			DFS(graph, connectedVertex);
+		}
+		temp = temp->next;
+	}
+}
+
+
+void solution2(void) {
+
+	printf("Enter no. of vert \n");
+	scanf("%d", &pointForDepth);
+
+	FILE* file = fopen(fileNameSecond, "r");
+	if (file == NULL) {
+		printf("Cant't open file");
+		exit(1);
+	}
+	for (int i = 0; i < pointForDepth; i++) {
+		for (int j = 0; j < pointForDepth; j++ ) {
+			fscanf(file, "%d", &GraphArrayForDepth[i][j]);
+		}
+	}
+	fclose(file);
+
+	printf("Graph matrix: \n");
+	printMatrixFromGraphArrayForDepth(GraphArrayForDepth);
+
+	GraphForDepth* graph = createGraphForDepth(pointForDepth);
+
+	for (int i = 0; i < pointForDepth; i++) {
+		for (int j = 0; j < pointForDepth; j++ ) {
+			if (GraphArrayForDepth[i][j] == 1) {
+				addEdgeForDepth(graph, i, j);
+				printf("i - %i, j - %i \n", i, j);
+			}
+		}
+	}
+
+	printGraphForDepth(graph);
+
+	DFS(graph, pointForDepth);
+}
+
 // MARK: Задание 3. Написать функцию обхода графа в ширину.
 
 int GraphArray[MAX][MAX], point;
 
-typedef struct QNode {
+void printMatrixFromGraphArray(int GraphArray[MAX][MAX]) {
+	printf("%s", "     ");
+	for (int i = 0; i < point; i++) {
+		printf("%c(%d) ", 65 + i, i);
+	}
+	printf("\n");
+	for (int i = 0; i < point; i++) {
+		printf("%c(%d)", 65 + i, i);
+		for (int j = 0; j < point; j++) {
+			printf("%5d", GraphArray[i][j]);
+		}
+		printf("\n");
+	}
+}
+
+typedef struct QNodeForWidth {
 	int vertex;
-	struct QNode *next;
-} QNode;
+	struct QNodeForWidth *next;
+} QNodeForWidth;
 
-typedef struct Queue {
+typedef struct QueueForWidth {
 	int items[SIZE];
-	struct QNode *front;
-	struct QNode *rear;
-} Queue;
+	int front;
+	int rear;
+} QueueForWidth;
 
-typedef struct Graph {
+typedef struct GraphForWidth {
 	int numVertices;
-	struct QNode** adjLists;
+	QNodeForWidth** adjLists;
 	int* visited;
-}Graph;
+}GraphForWidth;
 
-QNode* newNode(int k) {
-	QNode* temp = (QNode*)malloc(sizeof(QNode));
+QNodeForWidth* newNode(int k) {
+	QNodeForWidth* temp = (QNodeForWidth*)malloc(sizeof(QNodeForWidth));
 	temp->vertex = k;
 	temp->next = NULL;
 	return temp;
 }
-
-Queue* createQueue(void) {
-	Queue *q = (Queue*)malloc(sizeof(Queue));
-	q->front = NULL;
-	q->rear = NULL;
+QueueForWidth* createQueue(void) {
+	QueueForWidth* q = malloc(sizeof(QueueForWidth));
+	q->front = -1;
+	q->rear = -1;
 	return q;
 }
 
-void addTooQueue(Queue* q, int k) {
-	QNode* temp = newNode(k);
-
-	if (q->rear == NULL) {
-
-		q->front = temp;
-		q->rear = temp;
-		return;
+void enqueue(QueueForWidth* q, int value){
+	if(q->rear == SIZE-1)
+		printf("\nQueue is Full!!");
+	else {
+		if(q->front == -1)
+			q->front = 0;
+		q->rear++;
+		q->items[q->rear] = value;
 	}
-	q->rear->next = temp;
-	q->rear = temp;
 }
 
-void deQueue(Queue *q) {
-	if (q->front == NULL) {
-		return;
-	}
-
-	QNode* temp = q->front;
-	q->front = q->front->next;
-
-	if (q->front == NULL) {
-		q->rear = NULL;
-	}
-	free(temp);
-}
-
-int deQueuePopFront(Queue *q) {
-	if (q->front == NULL) {
-		return 0;
-	}
-
-	QNode* temp = q->front;
-	q->front = q->front->next;
-
-	if (q->front == NULL) {
-		q->rear = NULL;
-		return 0;
-	}
-	free(temp);
-	return temp->vertex;
-}
-
-int isEmpty(Queue* q) {
-	if(q->rear == -1)
+int isEmpty(QueueForWidth* q) {
+	if (q->rear == -1) {
 		return 1;
-	else
+	} else {
 		return 0;
+	}
 }
 
-void printQueue(Queue *q) {
+void printQueue(QueueForWidth *q) {
 	int i = q->front;
 	if(isEmpty(q)) {
 		printf("Queue is empty");
 	} else {
 		printf("\nQueue contains \n");
 		for(i = q->front; i < q->rear + 1; i++) {
-				printf("%d ", q->items[i]);
+			printf("%d ", q->items[i]);
 		}
 	}
 }
 
-void bfs(Graph* graph, int startVertex) {
-	Queue* q = createQueue();
+int dequeue(QueueForWidth* q){
+	int item;
+	if(isEmpty(q)){
+		printf("Queue is empty");
+		item = -1;
+	}
+	else{
+		item = q->items[q->front];
+		q->front++;
+		if(q->front > q->rear){
+			printf("Resetting queue");
+			q->front = q->rear = -1;
+		}
+	}
+	return item;
+}
+
+void wave(GraphForWidth* graph, int startVertex) {
+	QueueForWidth* q = createQueue();
 
 	graph->visited[startVertex] = 1;
-	addTooQueue(q, startVertex);
+	enqueue(q, startVertex);
 
 	while(!isEmpty(q)){
 		printQueue(q);
-		int currentVertex = deQueuePopFront(q);
+		int currentVertex = dequeue(q);
 		printf("Visited %d\n", currentVertex);
 
-	   struct node* temp = graph->adjLists[currentVertex];
+		QNodeForWidth* temp = graph->adjLists[currentVertex];
 
-	   while(temp) {
+		while(temp) {
 			int adjVertex = temp->vertex;
 			if(graph->visited[adjVertex] == 0){
 				graph->visited[adjVertex] = 1;
 				enqueue(q, adjVertex);
 			}
 			temp = temp->next;
-	   }
+		}
 	}
 }
 
-Graph* createGraph(int vertices) {
-	Graph* graph = malloc(sizeof(Graph));
+GraphForWidth* createGraph(int vertices) {
+	GraphForWidth* graph = malloc(sizeof(GraphForWidth));
 	graph->numVertices = vertices;
 
-	graph->adjLists = malloc(vertices * sizeof(QNode*));
+	graph->adjLists = malloc(vertices * sizeof(QNodeForWidth*));
 	graph->visited = malloc(vertices * sizeof(int));
 
-	int i;
-	for (i = 0; i < vertices; i++) {
+	for (int i = 0; i < vertices; i++) {
 		graph->adjLists[i] = NULL;
 		graph->visited[i] = 0;
 	}
@@ -200,8 +332,8 @@ Graph* createGraph(int vertices) {
 	return graph;
 }
 
-void addEdge(Graph* graph, int src, int dest) {
-	QNode* node = newNode(dest);
+void addEdge(GraphForWidth* graph, int src, int dest) {
+	QNodeForWidth* node = newNode(dest);
 	node->next = graph->adjLists[src];
 	graph->adjLists[src] = node;
 
@@ -213,41 +345,36 @@ void addEdge(Graph* graph, int src, int dest) {
 
 void solution3(void) {
 
-	int i, j;
 	printf("Enter no. of vert \n");
 	scanf("%d", &point);
 
-	FILE* file = fopen(fileName, "r");
+	FILE* file = fopen(fileNameSecond, "r");
 	if (file == NULL) {
 		printf("Cant't open file");
 		exit(1);
 	}
-	for (i = 0; i < point; i++) {
-		for (j = 0; j < point; j++ ) {
-			fscanf(file, "%d", &G[i][j]);
+	for (int i = 0; i < point; i++) {
+		for (int j = 0; j < point; j++ ) {
+			fscanf(file, "%d", &GraphArray[i][j]);
 		}
 	}
 	fclose(file);
 
 	printf("Graph matrix: \n");
-	printMatrix(G);
+	printMatrixFromGraphArray(GraphArray);
 
-	int graphVisitArr[point];
-	int currentPeak;
-	Queue* q = createQueue();
+	GraphForWidth* graph = createGraph(point);
 
-	for (i = 0; i < point; i++) {
-		graphVisitArr[i] = 1;
+	for (int i = 0; i < point; i++) {
+		for (int j = 0; j < point; j++ ) {
+			if (GraphArray[i][j] == 1) {
+				addEdge(graph, i, j);
+				printf("i - %i, j - %i \n", i, j);
+			}
+		}
 	}
-	graphVisitArr[0] = 2;
-	addTooQueue(q, 0);
-	addTooQueue(q, 1);
-	addTooQueue(q, 3);
-	currentPeak = deQueuePopFront(q);
-	printf("Queue pop %d \n", currentPeak);
-	printf("Queue front %d \n", q->front->vertex);
-	printf("Queue rear %d \n", q->rear->vertex);
 
+	wave(graph, 0);
 }
 
 int main(int argc, char *argv[]) {
@@ -262,6 +389,9 @@ int main(int argc, char *argv[]) {
 				break;
 			case 1:
 				solution1();
+				break;
+			case 2:
+				solution2();
 				break;
 			case 3:
 				solution3();

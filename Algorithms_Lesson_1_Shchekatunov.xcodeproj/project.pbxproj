@@ -14,7 +14,6 @@
 		165856D12739655500CF5DC1 /* HW_5.c in Sources */ = {isa = PBXBuildFile; fileRef = 165856D02739655500CF5DC1 /* HW_5.c */; };
 		165856D4273D24AA00CF5DC1 /* HW_6.c in Sources */ = {isa = PBXBuildFile; fileRef = 165856D3273D24AA00CF5DC1 /* HW_6.c */; };
 		165856D7273E8B9100CF5DC1 /* HW_7.c in Sources */ = {isa = PBXBuildFile; fileRef = 165856D6273E8B9100CF5DC1 /* HW_7.c */; };
-		165856DA27416AB500CF5DC1 /* testing.c in Sources */ = {isa = PBXBuildFile; fileRef = 165856D927416AB500CF5DC1 /* testing.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,7 +37,6 @@
 		165856D02739655500CF5DC1 /* HW_5.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = HW_5.c; sourceTree = "<group>"; };
 		165856D3273D24AA00CF5DC1 /* HW_6.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = HW_6.c; sourceTree = "<group>"; };
 		165856D6273E8B9100CF5DC1 /* HW_7.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = HW_7.c; sourceTree = "<group>"; };
-		165856D927416AB500CF5DC1 /* testing.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = testing.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,7 +76,6 @@
 				165856D02739655500CF5DC1 /* HW_5.c */,
 				165856D3273D24AA00CF5DC1 /* HW_6.c */,
 				165856D6273E8B9100CF5DC1 /* HW_7.c */,
-				165856D927416AB500CF5DC1 /* testing.c */,
 			);
 			path = Algorithms_Lesson_1_Shchekatunov;
 			sourceTree = "<group>";
@@ -139,7 +136,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				165856DA27416AB500CF5DC1 /* testing.c in Sources */,
 				165856D12739655500CF5DC1 /* HW_5.c in Sources */,
 				1631C8C5272EA2F000285B1D /* HW_3.c in Sources */,
 				1631C8C82730237D00285B1D /* HW_4.c in Sources */,
