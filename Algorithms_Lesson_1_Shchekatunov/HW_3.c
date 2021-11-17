@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <time.h>
 
 //void menu(void) {
 //	printf("1 - Попробовать оптимизировать пузырьковую сортировку. Сравнить количество операций сравнения оптимизированной и не оптимизированной программы.\n");
@@ -35,29 +36,31 @@
 //
 //void solution1(void) {
 //
-//	int firstArr[101];
-//	int secondArr[101];
+//	int firstArr[1000000];
+//	int secondArr[1000000];
 //	int arrayLength, z = 0, y, x, i, j = 0;
-//	int counterForFirstArr = 0, counterForSecondArr = 0;
+//	long long int counterForFirstArr = 0, counterForSecondArr = 0;
 //
 //	printf("Введите размер массива \n");
 //	scanf("%i", &arrayLength);
 //	for (i = 0; i < arrayLength; i++) {
-//		firstArr[i] = rand()% 100;
+//		firstArr[i] = rand()% 10000;
 //		secondArr[i] = firstArr[i];
 //	}
 //
-//	printf("Массив до сортировки -------------\n");
-//	print(arrayLength, firstArr);
+////	printf("Массив до сортировки -------------\n");
+////	print(arrayLength, firstArr);
 //
-//	for (i = 0; i < arrayLength; i++) {
-//		for (j = 0; j < arrayLength - 1; j++) {
-//			if (firstArr[j] > firstArr[j + 1]) {
-//				counterForFirstArr += 1;
-//				swap(&firstArr[j], &firstArr[j +1]);
-//			}
-//		}
-//	}
+////	for (i = 0; i < arrayLength; i++) {
+////		for (j = 0; j < arrayLength - 1; j++) {
+////			if (firstArr[j] > firstArr[j + 1]) {
+////				counterForFirstArr += 1;
+////				swap(&firstArr[j], &firstArr[j +1]);
+////			}
+////		}
+////	}
+//
+//		clock_t begin = clock();
 //
 //	for (z = arrayLength - 1; z >= 0; z--) {
 //		x = z;
@@ -70,21 +73,28 @@
 //		swap(&secondArr[x], &secondArr[z]);
 //	}
 //
-//	printf("Массив после сортировки не оптимизированной программы -------------\n");
-//	print(arrayLength, firstArr);
-//	printf("Количество операций сравнения не оптимизированной программы - %i, асимптотическая сложность %i\n", counterForFirstArr, arrayLength * arrayLength);
+//		clock_t end = clock();
+//		double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+//
+//
+//
+////	printf("Массив после сортировки не оптимизированной программы -------------\n");
+////	print(arrayLength, firstArr);
+////	printf("Количество операций сравнения не оптимизированной программы - %lli, асимптотическая сложность %i\n", counterForFirstArr, arrayLength * arrayLength);
+////	printf("-------------\n");
+////	printf("Массив после сортировки оптимизированной программы-------------\n");
+////	print(arrayLength, secondArr);
+//	printf("Количество операций сравнения оптимизированной программы - %lli, асимптотическая сложность %i\n", counterForSecondArr, arrayLength * arrayLength);
 //	printf("-------------\n");
-//	printf("Массив после сортировки оптимизированной программы-------------\n");
-//	print(arrayLength, secondArr);
-//	printf("Количество операций сравнения оптимизированной программы - %i, асимптотическая сложность %i\n", counterForSecondArr, arrayLength * arrayLength);
-//	printf("-------------\n");
+//
+//	printf("Затраченное время: %f \n", time_spent);
 //}
 //
 //// MARK: Задание 2. Реализовать шейкерную сортировку.
 //
 //void solution2(void) {
 //
-//	int arr[101];
+//	int arr[1000000];
 //	int arrayLength = 0, i;
 //	int left = 0;
 //	int right = 0;
@@ -98,10 +108,12 @@
 //		arr[i] = rand()% 100;
 //	}
 //
-//	printf("Массив до сортировки -------------\n");
-//	print(arrayLength, arr);
+////	printf("Массив до сортировки -------------\n");
+////	print(arrayLength, arr);
 //
 //	right = arrayLength - 1;
+//
+//	clock_t begin = clock();
 //
 //	while (left < right) {
 //
@@ -122,9 +134,14 @@
 //		left += 1;
 //	}
 //
-//	printf("Массив после сортировки -------------\n");
-//	print(arrayLength, arr);
+//	clock_t end = clock();
+//	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+//
+////	printf("Массив после сортировки -------------\n");
+////	print(arrayLength, arr);
 //	printf("Количество операций сравнения - %i, асимптотическая сложность %i\n", counterForArr, arrayLength * arrayLength);
+//
+//	printf("Затраченное время: %f \n", time_spent);
 //}
 //
 //// MARK: Задание 3. Реализовать бинарный алгоритм поиска.
